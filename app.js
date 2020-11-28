@@ -1,40 +1,49 @@
-var allProducts = new Object();
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
+document.querySelector('#getAll').addEventListener('click',getAll);
 
-function getProducts() {
-    app.get('/posts', function(req, res) {
-        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:80');
-        let res = fetch(`https://fakestoreapi.com/products`)
-        .then(res => res.json())
-        .then(json => allProducts = json)
-        .then(renderProducts(allProducts))
-    })
-        
-    return allProducts;
-}
+function getAll(){
+    var url = "https://fakestoreapi.com/products";
+    var xhr = new XMLHttpRequest();
 
-function renderProducts($acunabi) {
-    let testproducts =  $acunabi;
-    let html = ' ';
-    for (const products in testproducts) {
-        let htmlSegment = `
-        
-            <div class="carousel-cell">
-                <img src="${products.image}">
-                <h2>${products.title}</h2>
-                <h4> ${products.price}</h4>
-                <p> ${products.categories}</p>
-            </div>
-        
-        `;
-        console.log(products);
-        html += htmlSegment;
+    xhr.open('GET',url,true);
+    xhr.onload = function(){
+
+        if(this.status === 200){
+            var posts = JSON.parse(this.responseText);
+
+            var html="";
+
+            posts.forEach(post => {
+
+            html += `
+          <div class="contanier">
+            <div class="row">
+            <div class="col-sm-3">
+            <ul id="autoWdidth" class="cs-hidden">
+                  
+                <div class="card" style="width: 18rem;">
+                <img src=${post.image} class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">${post.title}</h5>
+                    <p class="card-text">${post.price}</p>
+                    <p class="card-text">${post.category}</p>
+                    <a href="#" class="btn btn-primary">ADD TO Cart!</a>
+                </div>
+               
+            </ul>
+        </div>
+        </div>
+        </div>
+            `;
+
+        });
+            document.querySelector('#results').innerHTML = html;
+
+
+        }
+
     }
-    
-    document.querySelector('#testcarousel').innerHTML = html;
-    return 0;
+    xhr.send();
+
+
 }
 
-getProducts();

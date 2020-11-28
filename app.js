@@ -1,3 +1,5 @@
+
+
 document.querySelector('#getAll').addEventListener('click',getAll);
 
 function getAll(){
@@ -37,12 +39,8 @@ function getAll(){
 
         });
             document.querySelector('#results').innerHTML = html;
-
-
         }
-
     }
     xhr.send();
-
+    
 }
-
